@@ -22,4 +22,10 @@ class CarController:
     def add_car(self, car):
         return self.repository.add_car(car)
 
+    def delete_car(self, car_id):
+        result = self.repository.delete_car(car_id)
+        return result
 
+    def update_car(self, car_id, car):
+        result = self.repository.update_car(car_id, car)
+        return result

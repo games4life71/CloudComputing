@@ -1,0 +1,6 @@
+﻿*.xml
+RestAPI/Car/__pycache__
+RestAPI/Controllers/__pycache__
+RestAPI/Database/__pycache__
+RestAPI/Repositories/CarsRepos/__pycache__
+*.iml

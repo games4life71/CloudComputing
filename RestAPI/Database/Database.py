@@ -1,6 +1,7 @@
 import sqlite3
 
 from Car.CarEntity import Car
+from Driver.DriverEntity import Driver
 
 
 class Database:
@@ -50,8 +51,60 @@ class Database:
 
     def delete_car(self, car_id):
         try:
-            self.cursor.execute("DELETE FROM Car WHERE id = ?", car_id)
+            result = self.cursor.execute("DELETE FROM Car WHERE id = ?", (car_id,))
             self.conn.commit()
             return car_id
         except sqlite3.Error as e:
+            return e
+
+    def get_all_drivers(self):
+        try:
+            rows = self.cursor.execute("SELECT * FROM Drivers")
+            if rows:
+                return [Driver.with_id(row[0], row[1], row[2]) for row in rows]
+
+        except sqlite3.Error as e:
+            return e
+
+    def get_driver_by_id(self, driver_id):
+        try:
+            self.cursor.execute("SELECT * FROM Drivers WHERE id = ?", (driver_id,))
+            rows = self.cursor.fetchone()
+            if rows:
+                return Driver.with_id(rows[0], rows[1], rows[2])
+            else:
+                return None
+
+        except sqlite3.Error as e:
+            return e
+        pass
+
+    def create_driver(self, driver):
+
+        print("got here")
+        self.cursor.execute("INSERT INTO Drivers (id, name, team_name) VALUES (?, ?, ?)",
+                            (driver.id, driver.name, driver.team))
+        self.conn.commit()
+        return driver.id
+
+    def update_driver(self, driver_id, driver):
+        try:
+            self.cursor.execute("UPDATE Drivers SET name = ?, team_name = ? WHERE id = ?",
+                                (driver.name, driver.team, driver_id))
+            self.conn.commit()
+            return driver.id
+        except sqlite3.Error as e:
+            return e
+        pass
+
+    def delete_driver(self, driver_id):
+        try:
+            self.cursor.execute("DELETE FROM Drivers WHERE id = ?", (driver_id,))
+            self.conn.commit()
+            if self.cursor.rowcount == 0:
+                return None  # No rows were deleted
+            else:
+                return driver_id
+        except sqlite3.Error as e:
+            print(e)
             return e

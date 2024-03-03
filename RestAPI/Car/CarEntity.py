@@ -33,3 +33,10 @@ class Car:
             raise ValueError("Speed cannot be negative")
 
         self.speed = newSpeed
+
+    #create a car object from a dictionary
+    @classmethod
+    def from_dict(cls, car_dict):
+        car = cls(car_dict["name"], car_dict["speed"], car_dict["year"])
+        return car
+        pass

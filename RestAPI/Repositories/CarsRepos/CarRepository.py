@@ -13,10 +13,13 @@ class CarRepo:
         return self.db.get_car(car_id)
 
     def add_car(self, car: Car):
-        return self.db.add_car(car)
+        #map the car object to a dictionary
+        car_to_add = Car.from_dict(car)
+        return self.db.add_car(car_to_add)
 
     def update_car(self, car_id, car:Car):
-        return self.db.update_car(car_id, car)
+        car_to_update = Car.from_dict(car)
+        return self.db.update_car(car_id, car_to_update)
 
     def delete_car(self, car_id: int):
         return self.db.delete_car(car_id)
