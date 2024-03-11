@@ -13,11 +13,7 @@ class CarController:
 
     def get_car(self, car_id):
         car = self.repository.get_car(car_id)
-        if car:
-            return car
-        else:
-            return "Car not found"
-
+        return car
 
     def add_car(self, car):
         return self.repository.add_car(car)

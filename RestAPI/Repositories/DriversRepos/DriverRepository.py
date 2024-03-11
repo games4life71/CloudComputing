@@ -14,7 +14,6 @@ class DriverRepository:
 
     def create_driver(self, driver):
         driver_to_add = Driver.from_dict(driver)
-        print("driver_to_add", driver_to_add.name)
         return self.db.create_driver(driver_to_add)
 
     def update_driver(self, driver_id, driver):
