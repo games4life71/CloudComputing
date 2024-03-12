@@ -116,7 +116,7 @@ class CustomHandler(BaseHTTPRequestHandler):
             return
 
     def do_POST(self):
-        if self.path == '/cars/add-car':
+        if self.path == '/cars':
             try:
                 # Read the request body and parse it into a dictionary
                 data = self.rfile.read(int(self.headers['Content-Length']))
@@ -141,7 +141,7 @@ class CustomHandler(BaseHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(json.dumps({'message': 'Failed to create new Car'}).encode())
 
-        elif self.path == '/drivers/add-driver':
+        elif self.path == '/drivers':
             try:
                 # Read the request body and parse it into a dictionary
                 data = self.rfile.read(int(self.headers['Content-Length']))
@@ -169,7 +169,7 @@ class CustomHandler(BaseHTTPRequestHandler):
             return
 
     def do_PUT(self):
-        if self.path.startswith('/cars/update-car/'):
+        if self.path.startswith('/cars'):
             try:
                 # Extract the car ID from the path
                 car_id = self.path.split('/')[-1]
@@ -199,7 +199,7 @@ class CustomHandler(BaseHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(json.dumps({'message': str(e)}).encode())
 
-        if self.path.startswith('/drivers/update-driver/'):
+        if self.path.startswith('/drivers'):
             try:
                 # Extract the driver ID from the path
                 driver_id = self.path.split('/')[-1]
@@ -236,7 +236,7 @@ class CustomHandler(BaseHTTPRequestHandler):
             self.wfile.write(json.dumps({'message': 'Not Found'}).encode())
 
     def do_DELETE(self):
-        if self.path.startswith('/cars/delete-car/'):
+        if self.path.startswith('/cars'):
             try:
                 car_id = self.path.split('/')[-1]
                 car = self.car_controller.delete_car(car_id)
@@ -259,7 +259,7 @@ class CustomHandler(BaseHTTPRequestHandler):
                 self.wfile.write(json.dumps({'message': str(e)}).encode())
                 return
 
-        elif self.path.startswith('/drivers/delete-driver/'):
+        elif self.path.startswith('/drivers'):
             try:
                 driver_id = self.path.split('/')[-1]
                 driver = self.driver_controller.delete_driver(driver_id)
