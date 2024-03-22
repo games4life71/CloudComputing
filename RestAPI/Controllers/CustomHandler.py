@@ -140,7 +140,7 @@ class CustomHandler(BaseHTTPRequestHandler):
                 self.send_header('Content-type', 'application/json')
                 self.end_headers()
                 self.wfile.write(json.dumps({'message': 'Failed to create new Car'}).encode())
-
+                return
         elif self.path == '/drivers':
             try:
                 # Read the request body and parse it into a dictionary
@@ -198,7 +198,7 @@ class CustomHandler(BaseHTTPRequestHandler):
                 self.send_header('Content-type', 'application/json')
                 self.end_headers()
                 self.wfile.write(json.dumps({'message': str(e)}).encode())
-
+                return
         if self.path.startswith('/drivers'):
             try:
                 # Extract the driver ID from the path
@@ -229,12 +229,13 @@ class CustomHandler(BaseHTTPRequestHandler):
                 self.send_header('Content-type', 'application/json')
                 self.end_headers()
                 self.wfile.write(json.dumps({'message': "Bad request"}).encode())
+                return
         else:
             self.send_response(404)
             self.send_header('Content-type', 'application/json')
             self.end_headers()
             self.wfile.write(json.dumps({'message': 'Not Found'}).encode())
-
+            return
     def do_DELETE(self):
         if self.path.startswith('/cars'):
             try:
@@ -270,7 +271,7 @@ class CustomHandler(BaseHTTPRequestHandler):
                     self.wfile.write(json.dumps({'message': 'Driver deleted'}).encode())
                     return
                 else:
-                    self.send_response(405)
+                    self.send_response(400)
                     self.send_header('Content-type', 'application/json')
                     self.end_headers()
                     self.wfile.write(json.dumps({'message': 'Bad request'}).encode())

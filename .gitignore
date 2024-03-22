@@ -4,3 +4,9 @@ RestAPI/Controllers/__pycache__
 RestAPI/Database/__pycache__
 RestAPI/Repositories/CarsRepos/__pycache__
 *.iml
+CloudProject/CloudProject/API/obj
+CloudProject/CloudProject/Application/obj
+CloudProject/CloudProject/Domain/obj
+CloudProject/CloudProject/Infrastructure/bin
+CloudProject/CloudProject/Infrastructure/obj
+CloudProject/CloudProject/Domain/bin
