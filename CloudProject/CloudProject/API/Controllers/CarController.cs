@@ -69,7 +69,7 @@ public class CarController: BaseController
     }
 
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> AddCar(AddCarCommand addCarCommand)
     {
 

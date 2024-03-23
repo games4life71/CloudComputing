@@ -1,6 +1,7 @@
 ﻿using Application.Contracts.Identity;
 using Application.Services.AuthentificationServices;
 using Application.Services.CarsAndDriversService;
+using Application.Services.JokeService;
 using Application.Services.Utils;
 using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -31,6 +32,8 @@ public static class InfraRegistration
         services.AddHttpClient();
         // services.AddScoped<IAuthorization, AuthorizationService>();
         services.AddScoped<UtilsService, UtilsService>();
+        services.AddScoped<JokeService, JokeService>();
+
         services.AddScoped<CarsAndDriversService, CarsAndDriversService>();
 
         return services;

@@ -11,6 +11,7 @@ public static  class ApplicationServiceRegistration
             cfg => cfg.RegisterServicesFromAssemblies
             (
                 Assembly.GetExecutingAssembly()));
+        services.AddScoped<JokeAPIWrapper.RequestBuilder, JokeAPIWrapper.RequestBuilder>();
     }
 
 }
