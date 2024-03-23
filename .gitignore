@@ -10,3 +10,5 @@ CloudProject/CloudProject/Domain/obj
 CloudProject/CloudProject/Infrastructure/bin
 CloudProject/CloudProject/Infrastructure/obj
 CloudProject/CloudProject/Domain/bin
+CloudProject/CloudProject/API/bin
+CloudProject/CloudProject/Application/bin

@@ -1,5 +1,7 @@
 ﻿using Application.Contracts.Identity;
 using Application.Services.AuthentificationServices;
+using Application.Services.CarsAndDriversService;
+using Application.Services.Utils;
 using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -26,8 +28,10 @@ public static class InfraRegistration
             .AddEntityFrameworkStores<DbContext>()
             .AddDefaultTokenProviders();
         services.AddScoped<IAuthService, AuthService>();
+        services.AddHttpClient();
         // services.AddScoped<IAuthorization, AuthorizationService>();
-
+        services.AddScoped<UtilsService, UtilsService>();
+        services.AddScoped<CarsAndDriversService, CarsAndDriversService>();
 
         return services;
     }
