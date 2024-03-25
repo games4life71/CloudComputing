@@ -1,0 +1,86 @@
+﻿@page "/Drivers"
+@using Frontend.ViewModels
+
+@using System.Net
+@inject HttpClient _httpClient;
+<h3>Drivers</h3>
+
+
+@if (drivers == null)
+{
+    <Flex JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center" Style="height: 100vh;">
+        <SpinKit Type="SpinKitType.Flow" Color="#ff4a3d" Centered="true"/>
+    </Flex>
+}
+
+else
+{
+    foreach (var driverViewModel in drivers)
+    {
+        <Column>
+            <Card class="small" @onclick="() => HandleCardClick(driverViewModel.name)">
+
+                <CardBody>
+                    <CardTitle Size="5">Driver name :@driverViewModel.name</CardTitle>
+                    <CardSubtitle class="mt1">Team : @driverViewModel.team</CardSubtitle>
+
+                </CardBody>
+
+            </Card>
+        </Column>
+    }
+}
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger mt-1 " role="alert">
+        <div class=" d-flex justify-content-between align-items-center">
+            <div>
+                <i class="fas fa-exclamation-circle"></i>
+                <span class="ms-2 fw-bold">@errorMessage</span>
+            </div>
+            <div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" onclick="@closeBtn" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+
+    List<DriverViewModel>? drivers;
+    string errorMessage = string.Empty;
+    string responseMessage = "nothing";
+
+    public async Task GetDrivers()
+    {
+        var response = await _httpClient.GetAsync("http://localhost:5127/api/v1/Driver");
+        if (!response.IsSuccessStatusCode)
+        {
+            errorMessage = "Error while retrieving drivers";
+        }
+        else
+        {
+            drivers = await response.Content.ReadFromJsonAsync<List<DriverViewModel>>();
+            responseMessage = "Success";
+        }
+    }
+
+    protected async override Task<Task> OnInitializedAsync()
+    {
+        await GetDrivers();
+        return base.OnInitializedAsync();
+    }
+
+    void closeBtn()
+    {
+        errorMessage = "";
+    }
+
+    private Task HandleCardClick(string CarId)
+    {
+        throw new NotImplementedException();
+    }
+
+}
+

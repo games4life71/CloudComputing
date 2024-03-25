@@ -32,6 +32,7 @@ public class CarController: BaseController
             return BadRequest(response);
         }
 
+        Console.WriteLine("got here");
         return Ok(response);
     }
 

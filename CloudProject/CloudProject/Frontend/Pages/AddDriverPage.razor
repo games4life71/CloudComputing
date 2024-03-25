@@ -1,0 +1,84 @@
+﻿@page "/add-driver"
+@using Frontend.ViewModels
+@inject HttpClient _httpClient
+<h3>Add a new Driver</h3>
+
+
+<EditForm Model="driverPostDto" OnValidSubmit="PostDriver">
+    <div class="form-group">
+        <label for="driver-name">Name:</label>
+        <InputText id="driver-name" @bind-Value="driverPostDto.name" class="form-control"/>
+    </div>
+    <div class="form-group">
+        <label for="team">Team:</label>
+        <InputText id="team" @bind-Value="driverPostDto.team" class="form-control"/>
+    </div>
+<button type="submit" class="btn btn-primary">Add driver</button>
+</EditForm>
+@if (!string.IsNullOrEmpty(_errorMessage))
+{
+    <div class="alert alert-danger mt-1 " role="alert">
+        <div class=" d-flex justify-content-between align-items-center">
+            <div>
+                <i class="fas fa-exclamation-circle"></i>
+                <span class="ms-2 fw-bold">@_errorMessage</span>
+            </div>
+            <div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" onclick="@CloseBtn" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(_successMessage))
+{
+    <div class="alert-success  mt-1 " role="alert">
+        <div class=" d-flex justify-content-between align-items-center">
+            <div>
+                <i class="fas fa-exclamation-circle"></i>
+                <span class="ms-2 fw-bold">@_successMessage</span>
+            </div>
+            <div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" onclick="@CloseBtn" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+
+}
+
+@code {
+
+    private readonly DriverPostDTO driverPostDto = new();
+    private string _errorMessage { get; set; } = "";
+    private string _successMessage { get; set; } = "";
+
+
+    public async Task PostDriver()
+    {
+        var response = await _httpClient.PostAsJsonAsync("http://localhost:5127/api/v1/Driver", driverPostDto);
+        if (response.IsSuccessStatusCode)
+        {
+            _successMessage = "Driver added successfully";
+        }
+        else
+        {
+            _errorMessage = "Error adding driver";
+        }
+    }
+
+    // protected override async Task<Task> OnInitializedAsync()
+    // {
+    //     await PostDriver();
+    //
+    //     return base.OnInitializedAsync();
+    // }
+
+    private void CloseBtn()
+    {
+        _errorMessage = "";
+        _successMessage = "";
+    }
+
+
+}

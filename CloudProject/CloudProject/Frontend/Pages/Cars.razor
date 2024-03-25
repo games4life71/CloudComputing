@@ -1,0 +1,90 @@
+﻿@page "/Cars"
+@using Frontend.ViewModels
+
+@using System.Net
+@inject HttpClient _httpClient;
+<h3>Cars</h3>
+
+
+@if (cars == null)
+{
+    <Flex JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center" Style="height: 100vh;">
+        <SpinKit Type="SpinKitType.Flow" Color="#ff4a3d" Centered="true"/>
+    </Flex>
+}
+
+else
+{
+    foreach (var carViewModel in cars)
+    {
+        <Column>
+            <Card class="small" @onclick="() => HandleCardClick(carViewModel.name)">
+
+                <CardBody>
+                    <CardTitle Size="5">Car Name :@carViewModel.name</CardTitle>
+                    <CardSubtitle class="mt1">Speed : @carViewModel.speed</CardSubtitle>
+                    <CardText>
+                        <p class="mt-lg-3 pt-3 ">Release Year: @carViewModel.year</p>
+
+                    </CardText>
+
+                </CardBody>
+
+            </Card>
+        </Column>
+    }
+}
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger mt-1 " role="alert">
+        <div class=" d-flex justify-content-between align-items-center">
+            <div>
+                <i class="fas fa-exclamation-circle"></i>
+                <span class="ms-2 fw-bold">@errorMessage</span>
+            </div>
+            <div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" onclick="@closeBtn" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+
+    List<CarViewModel>? cars;
+    string errorMessage = string.Empty;
+    string responseMessage = "nothing";
+
+    public async Task GetCars()
+    {
+        var response = await _httpClient.GetAsync("http://localhost:5127/api/v1/Car/cars");
+        if (!response.IsSuccessStatusCode)
+        {
+            errorMessage = "Error while retrieving cars";
+        }
+        else
+        {
+            cars = await response.Content.ReadFromJsonAsync<List<CarViewModel>>();
+            responseMessage = "Success";
+        }
+    }
+
+    protected async override Task<Task> OnInitializedAsync()
+    {
+        await GetCars();
+        return base.OnInitializedAsync();
+    }
+
+    void closeBtn()
+    {
+        errorMessage = "";
+    }
+
+    private Task HandleCardClick(string CarId)
+    {
+        throw new NotImplementedException();
+    }
+
+}
+
