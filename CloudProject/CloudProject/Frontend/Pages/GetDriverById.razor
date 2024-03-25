@@ -1,0 +1,90 @@
+﻿@page "/driver/{driverId:guid}"
+@using Frontend.ViewModels
+@inject HttpClient _httpClient
+@inject NavigationManager NavigationManager
+<h3>Driver information :</h3>
+
+
+<Container>
+    <Row>
+        <Column ColumnSize="ColumnSize.Is12">
+            @if (Driver != null)
+            {
+                <Card>
+                    <CardHeader>
+                        <CardTitle><strong>Driver name: </strong> : @Driver.name</CardTitle>
+                    </CardHeader>
+                    <CardBody>
+                        <CardText><strong>Team name:</strong> @Driver.team</CardText>
+                    </CardBody>
+                </Card>
+                <Button Color="Color.Primary" Clicked="SeeMoreCarInfo">See more info</Button>
+
+            }
+            else
+            {
+                <Flex JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center" Style="height: 100vh;">
+                    <SpinKit Type="SpinKitType.Flow" Color="#ff4a3d" Centered="true" />
+                </Flex>
+            }
+        </Column>
+    </Row>
+</Container>
+
+@if (!string.IsNullOrEmpty(_errorMessage))
+{
+    <div class="alert alert-danger mt-1 " role="alert">
+        <div class=" d-flex justify-content-between align-items-center">
+            <div>
+                <i class="fas fa-exclamation-circle"></i>
+                <span class="ms-2 fw-bold">@_errorMessage</span>
+            </div>
+            <div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" onclick="@CloseBtn" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+
+    [Parameter] public Guid DriverId { get; set; }
+    string _errorMessage = string.Empty;
+
+
+    public DriverViewModel? Driver { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var response  = await _httpClient.GetAsync($"http://localhost:5127/api/v1/Driver/{DriverId}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                _errorMessage = "Failed to load driver";
+            }
+
+            Driver = await response.Content.ReadFromJsonAsync<DriverViewModel>();
+
+        }
+        catch (Exception e)
+        {
+            _errorMessage = e.Message;
+        }
+
+    }
+    private void CloseBtn()
+    {
+        _errorMessage = "";
+        // _successMessage = "";
+    }
+
+    private Task SeeMoreCarInfo(MouseEventArgs arg)
+    {
+       NavigationManager.NavigateTo($"/driver-info?driverName={Driver.name}");
+            return Task.CompletedTask;
+    }
+
+}

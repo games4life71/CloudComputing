@@ -1,0 +1,112 @@
+﻿@page "/driver-info"
+@using System.Web
+@using Frontend.ViewModels
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
+
+<h1>Found @resultCount Drivers in our database !</h1>
+
+@if (drivers != null)
+{
+    foreach (var driverInfo in drivers)
+    {
+        <Container>
+            <Row>
+                <Column ColumnSize="ColumnSize.Is12">
+                    @if (driverInfo != null)
+                    {
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>
+                                    <strong>@driverInfo.driver_name</strong>
+                                </CardTitle>
+                            </CardHeader>
+                            <CardBody>
+                                <CardText>
+                                    <strong>Nationality: </strong> @driverInfo.nationality
+                                </CardText>
+                                <CardText>
+                                    <strong>Team name: </strong> @driverInfo.team_name
+                                </CardText>
+                                <CardText>
+                                    <strong>Season info: </strong> @driverInfo.season
+                                </CardText>
+                                <CardText>
+                                    <strong>Is reserve: </strong> @driverInfo.is_reserve
+                                </CardText>
+
+
+                            </CardBody>
+                        </Card>
+                    }
+                    else
+                    {
+                        <Flex JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center" Style="height: 100vh;">
+                            <SpinKit Type="SpinKitType.Flow" Color="#ff4a3d" Centered="true"/>
+                        </Flex>
+                    }
+                </Column>
+            </Row>
+        </Container>
+    }
+}
+
+@if (!string.IsNullOrEmpty(_errorMessage))
+{
+    <div class="alert alert-danger mt-1 " role="alert">
+        <div class=" d-flex justify-content-between align-items-center">
+            <div>
+                <i class="fas fa-exclamation-circle"></i>
+                <span class="ms-2 fw-bold">@_errorMessage</span>
+            </div>
+            <div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" onclick="@CloseBtn" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+}
+
+
+@code {
+
+
+    public string _errorMessage { get; set; }
+
+    // public DriverInfoViewModel? driverInfo { get; set; }
+    public List<DriverInfoViewModel> drivers { get; set; }
+    public int resultCount { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var uri = new Uri(NavigationManager.Uri);
+            var query = HttpUtility.ParseQueryString(uri.Query);
+            var driverName = query["driverName"];
+
+            //make a request
+            var response = await HttpClient.GetAsync($"http://localhost:5127/api/DriverInfo?DriverName={driverName}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception("No data found for the make " + "'" + driverName + "'.");
+            }
+
+
+            drivers = await response.Content.ReadFromJsonAsync<List<DriverInfoViewModel>>();
+            resultCount = drivers.Count;
+            // driverInfo = drivers[0];
+        }
+        catch (Exception e)
+        {
+            _errorMessage = e.Message;
+        }
+    }
+
+    private void CloseBtn()
+    {
+        _errorMessage = "";
+        // _successMessage = "";
+    }
+
+}

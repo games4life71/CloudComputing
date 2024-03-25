@@ -1,6 +1,7 @@
 ﻿@page "/add-driver"
 @using Frontend.ViewModels
 @inject HttpClient _httpClient
+@layout MainLayout
 <h3>Add a new Driver</h3>
 
 
@@ -65,6 +66,8 @@
         {
             _errorMessage = "Error adding driver";
         }
+        //refresh the page
+        StateHasChanged();
     }
 
     // protected override async Task<Task> OnInitializedAsync()

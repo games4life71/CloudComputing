@@ -12,7 +12,7 @@ public class CarInfoController(CarInfoService carInfoService):BaseController
     [HttpGet]
     public async Task<IActionResult> GetCarInfo(string carMake,string carModel = "")
     {
-
+        Console.WriteLine("got here");
         var result = await carInfoService.GetCarInfo(carModel,carMake);
 
         if(!result.Item2)

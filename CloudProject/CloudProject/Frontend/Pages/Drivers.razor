@@ -1,8 +1,9 @@
 ﻿@page "/Drivers"
 @using Frontend.ViewModels
-
+@layout MainLayout
 @using System.Net
 @inject HttpClient _httpClient;
+@inject NavigationManager _navigationManager
 <h3>Drivers</h3>
 
 
@@ -18,7 +19,7 @@ else
     foreach (var driverViewModel in drivers)
     {
         <Column>
-            <Card class="small" @onclick="() => HandleCardClick(driverViewModel.name)">
+            <Card class="small" @onclick="() => HandleCardClick(driverViewModel.id)">
 
                 <CardBody>
                     <CardTitle Size="5">Driver name :@driverViewModel.name</CardTitle>
@@ -79,8 +80,8 @@ else
 
     private Task HandleCardClick(string CarId)
     {
-        throw new NotImplementedException();
+        _navigationManager.NavigateTo($"driver/{CarId}");
+        return Task.CompletedTask;
     }
 
 }
-

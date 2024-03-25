@@ -1,9 +1,10 @@
 ﻿@page "/Cars"
 @using Frontend.ViewModels
-
+@layout MainLayout
 @using System.Net
 @inject HttpClient _httpClient;
-<h3>Cars</h3>
+@inject NavigationManager NavigationManager
+<h3>Cars:</h3>
 
 
 @if (cars == null)
@@ -18,10 +19,10 @@ else
     foreach (var carViewModel in cars)
     {
         <Column>
-            <Card class="small" @onclick="() => HandleCardClick(carViewModel.name)">
+            <Card class="small" @onclick="() => HandleCardClick(carViewModel.id)">
 
                 <CardBody>
-                    <CardTitle Size="5">Car Name :@carViewModel.name</CardTitle>
+                    <CardTitle Size="5">Driver Name :@carViewModel.name</CardTitle>
                     <CardSubtitle class="mt1">Speed : @carViewModel.speed</CardSubtitle>
                     <CardText>
                         <p class="mt-lg-3 pt-3 ">Release Year: @carViewModel.year</p>
@@ -83,7 +84,8 @@ else
 
     private Task HandleCardClick(string CarId)
     {
-        throw new NotImplementedException();
+        NavigationManager.NavigateTo($"/car/{CarId}");
+        return Task.CompletedTask;
     }
 
 }

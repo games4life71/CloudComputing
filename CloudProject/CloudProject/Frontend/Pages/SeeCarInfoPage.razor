@@ -1,0 +1,101 @@
+﻿@page "/car-info"
+@using System.Web
+@using Frontend.ViewModels
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
+
+
+<Container>
+    <Row>
+        <Column ColumnSize="ColumnSize.Is12">
+            @if (carInfo != null)
+            {
+                <Card>
+                    <CardHeader>
+                        <CardTitle>@carInfo.make</CardTitle>
+                    </CardHeader>
+                    <CardBody>
+                        <CardText>
+                            <strong>Transmission: </strong> @carInfo.transmission
+                        </CardText>
+                        <CardText>
+                            <strong>Year:</strong> @carInfo.year
+                        </CardText>
+                        <CardText>
+                            <strong>Fuel Type:</strong> @carInfo.fuel_type
+                        </CardText>
+                        <CardText>
+                            <strong>Model:</strong> @carInfo.model
+                        </CardText>
+                        <CardText>
+                            <strong>Drive:</strong> @carInfo.drive
+                        </CardText>
+
+                    </CardBody>
+                </Card>
+            }
+            else
+            {
+                <Flex JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center" Style="height: 100vh;">
+                    <SpinKit Type="SpinKitType.Flow" Color="#ff4a3d" Centered="true"/>
+                </Flex>
+            }
+        </Column>
+    </Row>
+</Container>
+
+@if (!string.IsNullOrEmpty(_errorMessage))
+{
+    <div class="alert alert-danger mt-1 " role="alert">
+        <div class=" d-flex justify-content-between align-items-center">
+            <div>
+                <i class="fas fa-exclamation-circle"></i>
+                <span class="ms-2 fw-bold">@_errorMessage</span>
+            </div>
+            <div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" onclick="@CloseBtn" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+}
+
+
+@code {
+
+
+    public string _errorMessage { get; set; }
+    public CarInfoViewmodel? carInfo { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var uri = new Uri(NavigationManager.Uri);
+            var query = HttpUtility.ParseQueryString(uri.Query);
+            var carMake = query["carMake"];
+
+            //make a request
+            var response = await HttpClient.GetAsync($"http://localhost:5127/api/CarInfo?carMake={query["carMake"]}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception("No data found for the make " + "'" + carMake + "'.");
+            }
+
+
+            var cars = await response.Content.ReadFromJsonAsync<List<CarInfoViewmodel>>();
+            carInfo = cars[0];
+        }
+        catch (Exception e)
+        {
+            _errorMessage = e.Message;
+        }
+    }
+
+    private void CloseBtn()
+    {
+        _errorMessage = "";
+        // _successMessage = "";
+    }
+
+}

@@ -36,9 +36,8 @@
         </div>
     </nav>
 </div>
-
 @code {
-    private bool collapseNavMenu = true;
+    private bool collapseNavMenu = false;
 
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
@@ -46,113 +45,5 @@
     {
         collapseNavMenu = !collapseNavMenu;
     }
-
 }
 
-
-
-@* *@
-@* @using MatBlazor *@
-@* @inject NavigationManager NavigationManager *@
-@* <MatDrawerContainer> *@
-@*     <MatDrawer @bind-Opened="@collapseNavMenu" Mode="MatDrawerMode.Modal"> *@
-@*         <MatNavMenu class="d-flex flex-column justify-content-between"> *@
-@*             <div> *@
-@*                 <MatNavItem Title="Home" Href="/" class=".mt-0" Style="margin-bottom: 20px; margin-top: auto">Home</MatNavItem> *@
-@* *@
-@* *@
-@* *@
-@*                     <Dropdown Class=""> *@
-@*                         <DropdownToggle Color="Color.Info"> *@
-@*                             Products *@
-@*                         </DropdownToggle> *@
-@*                         <DropdownMenu> *@
-@*                             <DropdownItem Clicked='() => NavigationManager.NavigateTo("/add-product")'>Add Product</DropdownItem> *@
-@*                             <DropdownDivider/> *@
-@*                             <DropdownItem Clicked='() => NavigationManager.NavigateTo("/delete-product")'>Delete Product</DropdownItem> *@
-@*                             <DropdownDivider/> *@
-@*                             <DropdownItem Clicked='() => NavigationManager.NavigateTo("/products")'>Show Products</DropdownItem> *@
-@*                         </DropdownMenu> *@
-@*                     </Dropdown> *@
-@*                     <Divider Width="Width.Is50"/> *@
-@*                     <Dropdown Margin="Margin.IsAuto.OnAll" Direction="Direction.Down"> *@
-@*                         <DropdownToggle Color="Color.Info"> *@
-@*                             Categories *@
-@*                         </DropdownToggle> *@
-@*                         <DropdownMenu> *@
-@*                             <DropdownItem Clicked='() => NavigationManager.NavigateTo("/add-category")'>Add Category</DropdownItem> *@
-@*                             <DropdownDivider/> *@
-@*                             <DropdownItem Clicked='() => NavigationManager.NavigateTo("/delete-category")'>Delete Category</DropdownItem> *@
-@*                             <DropdownDivider/> *@
-@*                             <DropdownItem Clicked='() => NavigationManager.NavigateTo("/categories")'>Show Categories</DropdownItem> *@
-@*                         </DropdownMenu> *@
-@*                     </Dropdown> *@
-@* *@
-@*             </div> *@
-@* *@
-@* *@
-@*         </MatNavMenu> *@
-@*     </MatDrawer> *@
-@*     <MatDrawerContent> *@
-@*         <MatAppBarContainer> *@
-@*             <MatAppBar Fixed="true"> *@
-@*                 <MatAppBarRow> *@
-@*                     <MatAppBarSection> *@
-@*                         <MatIconButton Icon="menu" OnClick="@ToggleNavMenu"></MatIconButton> *@
-@*                         <MatAppBarTitle> *@
-@*                             <NavLink href="/" class="text-white text-decoration-none">ShopHub ltd.</NavLink> *@
-@*                         </MatAppBarTitle> *@
-@*                     </MatAppBarSection> *@
-@*                     <MatAppBarSection Align="@MatAppBarSectionAlign.End"> *@
-@*                         <MatIconButton Icon="favorite" Link="/favorites"></MatIconButton> *@
-@*                         <MatIconButton Icon="shopping_cart" Link="/cart"></MatIconButton> *@
-@*                     </MatAppBarSection> *@
-@* *@
-@* *@
-@*                 </MatAppBarRow> *@
-@*             </MatAppBar> *@
-@*         </MatAppBarContainer> *@
-@*     </MatDrawerContent> *@
-@* </MatDrawerContainer> *@
-@* *@
-@* @code { *@
-@*     private bool collapseNavMenu = false; *@
-@*     private bool isAuthenticated = false; *@
-@*     string error = string.Empty; *@
-@* *@
-@* *@
-@*     private void ToggleNavMenu() *@
-@*     { *@
-@*         collapseNavMenu = !collapseNavMenu; *@
-@*     } *@
-@* *@
-@*     // protected override async Task OnInitializedAsync() *@
-@*     // { *@
-@*     //     try *@
-@*     //     { *@
-@*     //         var authState = await CustomAuthenticationStateProvider.GetAuthenticationStateAsync(); *@
-@*     //         var user = authState.User; *@
-@*     //         if (user.Identity != null) *@
-@*     //             isAuthenticated = user.Identity.IsAuthenticated; *@
-@*     //     } *@
-@*     //     catch (Exception e) *@
-@*     //     { *@
-@*     //         Console.WriteLine(e); *@
-@*     //         error = e.Message; *@
-@*     //         StateHasChanged(); *@
-@*     //     } *@
-@*     // } *@
-@*     // private async void OnAuthenticationStateChanged(Task<AuthenticationState> task) *@
-@*     // { *@
-@*     //     // await CustomAuthenticationStateProvider.; *@
-@*     //     await InvokeAsync(StateHasChanged); *@
-@*     // *@
-@*     // } *@
-@*     // *@
-@*     // async void Logout() *@
-@*     // { *@
-@*     //     await CustomStateProvider.Logout(); *@
-@*     //     NavigationManager.NavigateTo("/"); *@
-@*     // } *@
-@* *@
-@* } *@

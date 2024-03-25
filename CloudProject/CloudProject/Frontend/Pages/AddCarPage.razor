@@ -1,24 +1,25 @@
 ﻿@page "/add-car"
-@using Frontend.ViewModels
-@inject HttpClient _httpClient
+@using Frontend.ViewModels\
+@layout MainLayout
+@inject HttpClient HttpClient
 <h3>Add a new Car</h3>
 
 
-<EditForm Model="carPostDto" OnValidSubmit="PostCar">
+<EditForm Model="_carPostDto" OnValidSubmit="PostCar">
 
 
 
     <div class="form-group">
         <label for="name">Name:</label>
-        <InputText id="name" @bind-Value="carPostDto.name" class="form-control"/>
+        <InputText id="name" @bind-Value="_carPostDto.name" class="form-control"/>
     </div>
     <div class="form-group">
         <label for="speed">Speed:</label>
-        <InputNumber id="speed" @bind-Value="carPostDto.speed" class="form-control"/>
+        <InputNumber id="speed" @bind-Value="_carPostDto.speed" class="form-control"/>
     </div>
     <div class="form-group">
         <label for="year">Year:</label>
-        <InputNumber id="year" @bind-Value="carPostDto.year" class="form-control"/>
+        <InputNumber id="year" @bind-Value="_carPostDto.year" class="form-control"/>
     </div>
 <button type="submit" class="btn btn-primary">Add car</button>
 </EditForm>
@@ -56,14 +57,14 @@
 
 @code {
 
-    private readonly CarPostDTO carPostDto = new();
+    private readonly CarPostDTO _carPostDto = new();
     private string _errorMessage { get; set; } = "";
     private string _successMessage { get; set; } = "";
 
 
     public async Task PostCar()
     {
-        var response = await _httpClient.PostAsJsonAsync("http://localhost:5127/api/v1/Car", carPostDto);
+        var response = await HttpClient.PostAsJsonAsync("http://localhost:5127/api/v1/Car", _carPostDto);
         if (response.IsSuccessStatusCode)
         {
             _successMessage = "Car added successfully";
@@ -72,6 +73,7 @@
         {
             _errorMessage = "Error adding car";
         }
+        StateHasChanged();
     }
 
     // protected override async Task<Task> OnInitializedAsync()
