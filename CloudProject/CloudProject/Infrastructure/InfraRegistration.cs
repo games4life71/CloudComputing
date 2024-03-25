@@ -1,6 +1,8 @@
 ﻿using Application.Contracts.Identity;
 using Application.Services.AuthentificationServices;
+using Application.Services.CarInfoService;
 using Application.Services.CarsAndDriversService;
+using Application.Services.DriversInfoService;
 using Application.Services.JokeService;
 using Application.Services.Utils;
 using Domain.Entities;
@@ -33,9 +35,9 @@ public static class InfraRegistration
         // services.AddScoped<IAuthorization, AuthorizationService>();
         services.AddScoped<UtilsService, UtilsService>();
         services.AddScoped<JokeService, JokeService>();
-
+        services.AddScoped<CarInfoService, CarInfoService>();
         services.AddScoped<CarsAndDriversService, CarsAndDriversService>();
-
+        services.AddScoped<DriverInfoService, DriverInfoService>();
         return services;
     }
 }
